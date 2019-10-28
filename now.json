@@ -1,4 +1,5 @@
 {
 	"version": 2,
-	"builds": [{ "src": "main.go", "use": "@now/go" }]
+    "builds": [{ "src": "main.go", "use": "@now/go" }],
+    "routes": [{"src": "(.*)", "dest": "index.html"}]
 }
