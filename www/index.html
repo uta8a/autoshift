@@ -8,6 +8,10 @@
     <h1>WIP: AUTOSHIFT</h1>
     <p class="date">Loading date...</p>
     <a href="/www/sample.csv" download="sample.csv">download csv file</a>
+    <form enctype="multipart/form-data" action="/api/get.go" method="post">
+      <input type="file" name="uploadfile"/>
+      <input type="submit" value="upload" />
+    </form>
     <script>
       function main() {
         return fetch('/api/date.go')
