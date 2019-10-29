@@ -28,8 +28,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Fprint(w, "\n")
 		}
-		// fmt.Fprint(w, "%v", handler.Header)
-		// fmt.Fprint(w, file)
 	} else {
 		fmt.Fprint(w, "not post request")
 	}
