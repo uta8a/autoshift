@@ -12,19 +12,23 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		allline := [][]string{}
 		allinput := [][]string{}
 		r.ParseMultipartForm(32 << 20)
-		file, _, err := r.FormFile("uploadfile")
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer file.Close()
-		reader := csv.NewReader(file)
-		for {
-			line, err := reader.Read()
+		formdata := r.MultipartForm
+		files := formdata.File["uploadfile"]
+		for i := range files {
+			file, err := files[i].Open()
 			if err != nil {
 				break
 			}
-			allinput = append(allinput, line)
+			defer file.Close()
+			reader := csv.NewReader(file)
+			for {
+				line, err := reader.Read()
+				if err != nil {
+					break
+				}
+				allinput = append(allinput, line)
+			}
+
 		}
 		// fmt.Printf("%#v", allline)
 		// allline = append(allline, allinput[0][1:])

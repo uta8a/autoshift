@@ -4,9 +4,6 @@
 <head>
   <title>AUTOSHIFT</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css" />
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
@@ -14,27 +11,10 @@
   <p class="date">Loading date...</p>
   <a href="/www/sample.csv" download="sample.csv">download csv file</a>
   <form enctype="multipart/form-data" action="/api/get.go" method="post">
-    <input type="file" name="uploadfile" />
+    <input type="file" name="uploadfile" multiple="multiple"/>
     <input type="submit" value="upload" />
   </form>
-  <table id="table1" class="mytable">
-    <thead>
-      <tr>
-        <td>code</td>
-        <td>hi</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>ok</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>no</td>
-      </tr>
-    </tbody>
-  </table>
+  
   <script>
     function main() {
       return fetch('/api/date.go')
@@ -46,29 +26,6 @@
         });
     }
     main();
-  </script>
-  <script>
-    $(function () {
-      //表示言語を日本語にする
-      $.extend($.fn.dataTable.defaults, {
-        language: {
-          url: "http://cdn.datatables.net/plug-ins/1.10.16/i18n/Japanese.json"
-        }
-      });
-
-      //DataTablesの初期設定処理
-      $("#table1").DataTable({
-        // 件数切替機能 無効
-        lengthChange: false,
-        // 検索機能 無効
-        searching: false,
-        // ソート機能 無効
-        ordering: false,
-        // 情報表示 無効
-        info: false,
-        // ページング機能 無効
-        paging: false
-      });
   </script>
 </body>
 
