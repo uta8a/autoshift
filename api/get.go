@@ -7,6 +7,20 @@ import (
 	"strconv"
 )
 
+func calc_score(keys []string, table [][]string) map[string]int {
+	f := make(map[string]int)
+	for i := range table {
+		for _, ee := range table[i] {
+			for _, eee := range keys {
+				if ee == eee {
+					f[ee]++
+				}
+			}
+		}
+	}
+	return f
+}
+
 func Handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method: ", r.Method)
 	if r.Method == "POST" {
@@ -79,8 +93,13 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			}
 			allline = append(allline, row)
 		}
-		fmt.Printf("%#v", allline[0])
+		// fmt.Printf("%#v", allline[0])
+		scores := calc_score(allkey, allline)
+		// fmt.Println((len(elem)), (len(elem[0]) - 1))
 		allstr := ""
+		for key, ele := range scores {
+			allstr += `<h1>` + key + `:` + strconv.Itoa(ele) + `/` + strconv.Itoa(len(elem)*(len(elem[0])-1)) + `<h1>`
+		}
 		allstr += `<table id="table1" class="table is-bordered">`
 		allstr += `<thead><tr>`
 		for _, ele := range header {
@@ -122,7 +141,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		</head>
 
 		<body>
-		  <h1>HELLO</h1>`+allstr+`</html>`)
+		  <h1>SHIFT suggestion</h1>`+allstr+`</html>`)
 	} else {
 		fmt.Fprint(w, "not post request")
 	}
