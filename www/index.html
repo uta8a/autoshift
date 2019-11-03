@@ -8,25 +8,11 @@
 
 <body>
   <h1>WIP: AUTOSHIFT</h1>
-  <p class="date">Loading date...</p>
   <a href="/www/sample.csv" download="sample.csv">download csv file</a>
   <form enctype="multipart/form-data" action="/api/get.go" method="post">
     <input type="file" name="uploadfile" multiple="multiple"/>
     <input type="submit" value="upload" />
   </form>
-  
-  <script>
-    function main() {
-      return fetch('/api/date.go')
-        .then(function (response) {
-          return response.text();
-        })
-        .then(function (date) {
-          document.querySelector('.date').textContent = date;
-        });
-    }
-    main();
-  </script>
 </body>
 
 </html>

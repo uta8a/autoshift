@@ -14,7 +14,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		allline := [][]string{}
 		allkey := []string{}
 		allinput := make(map[string][][]string)
-		colors := []string{"#EA5532", "#FFF100", "#0068B7", "#00A0E9", "#00A051", "#9FD9F6", "#E4007F", "#D3DEF1", "#187FC4", "#86B81B", "#EA5504", "#00693E", "#F39800", "#ED6C00", "#009E96", "#008DCB", "D4ECEA", "#1D2088", "#920783"}
+		colors := ["#EA5532", "#FFF100", "#0068B7", "#00A0E9", "#00A051", "#9FD9F6", "#E4007F", "#D3DEF1", "#187FC4", "#86B81B", "#EA5504", "#00693E", "#F39800", "#ED6C00", "#009E96", "#008DCB", "D4ECEA", "#1D2088", "#920783"]
 
 		r.ParseMultipartForm(32 << 20)
 		formdata := r.MultipartForm
@@ -98,12 +98,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		allstr += `</tbody>`
 		allstr += `</table>`
 		allstr += `</body><script>document.querySelectorAll('td').forEach((v,i) => {`
-		for i, el := range allkey {
+		for i, el in allkey {
 			color := ""
-			if i < len(colors) {
+			if i<len(colors) {
 				color = colors[i]
 			}
-			allstr += `if (v.innerText == "` + el + `") {v.style.backgroundColor = "` + color + `";}`
+			allstr += `if (v.innerText == "`+el+`") {v.style.backgroundColor = "`+color +`";}`
 		}
 		allstr += `});</script>`
 
