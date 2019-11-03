@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/csv"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
 )
@@ -98,19 +99,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		// fmt.Println((len(elem)), (len(elem[0]) - 1))
 		allstr := ""
 		for key, ele := range scores {
-			allstr += `<h1>` + key + `:` + strconv.Itoa(ele) + `/` + strconv.Itoa(len(elem)*(len(elem[0])-1)) + `<h1>`
+			allstr += `<h1>` + template.HTMLEscapeString(key) + `:` + template.HTMLEscapeString(strconv.Itoa(ele)) + `/` + template.HTMLEscapeString(strconv.Itoa(len(elem)*(len(elem[0])-1))) + `<h1>`
 		}
 		allstr += `<table id="table1" class="table is-bordered">`
 		allstr += `<thead><tr>`
 		for _, ele := range header {
-			allstr += `<td>` + ele + `</td>`
+			allstr += `<td>` + template.HTMLEscapeString(ele) + `</td>`
 		}
 		allstr += `</tr></thead>`
 		allstr += `<tbody>`
 		for _, st := range allline {
 			allstr += `<tr>`
 			for _, ele := range st {
-				allstr += `<td>` + ele + `</td>`
+				allstr += `<td>` + template.HTMLEscapeString(ele) + `</td>`
 			}
 			allstr += `</tr>`
 		}
@@ -122,7 +123,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			if i < len(colors) {
 				color = colors[i]
 			}
-			allstr += `if (v.innerText == "` + el + `") {v.style.backgroundColor = "` + color + `";}`
+			allstr += `if (v.innerText == "` + template.HTMLEscapeString(el) + `") {v.style.backgroundColor = "` + color + `";}`
 		}
 		allstr += `});</script>`
 
