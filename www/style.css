@@ -18,23 +18,80 @@ body {
     text-rendering: optimizeLegibility;
     hyphens: auto;
     text-align: center;
-  }
+}
   
-  h1 {
-    text-align: center;
-    font-size: 45px;
-  }
-  
-  a {
-    cursor: pointer;
-    color: #0076ff;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border-bottom: 1px solid white;
-  }
-  span {
-    display: block;
-  }
-  a:hover {
-    border-bottom: 1px solid #0076ff;
-  }
+h1 {
+  text-align: center;
+  font-size: 45px;
+}
+
+a {
+  cursor: pointer;
+  color: #0076ff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid white;
+}
+span {
+  display: block;
+}
+a:hover {
+  border-bottom: 1px solid #0076ff;
+}
+.btn-flat {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: black;
+  background: #ECECEC;
+}
+
+.btn-flat:hover {
+  background: #00bcd4;
+  color: white;
+}
+input,
+button,
+select,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: solid 2px black;
+  border-radius: 10px;
+  font: inherit;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  display: none;
+}
+
+input[type='submit'],
+input[type='button'],
+label,
+button,
+select {
+  cursor: pointer;
+}
+
+select::-ms-expand {
+  display: none;
+}
+.cover {
+  display: flex;
+}
+.inner {
+  padding: 10px;
+  margin: 10px;
+  border: solid 5px black;
+  border-radius: 10px;
+}

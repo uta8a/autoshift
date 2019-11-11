@@ -8,11 +8,25 @@ import (
 	"strconv"
 )
 
+func calc_score(keys []string, table [][]string) map[string]int {
+	f := make(map[string]int)
+	for i := range table {
+		for _, ee := range table[i] {
+			for _, eee := range keys {
+				if ee == eee {
+					f[ee]++
+				}
+			}
+		}
+	}
+	return f
+}
+
 func Handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method: ", r.Method)
 	if r.Method == "POST" {
 		header := []string{}
-		// allline := [][]string{}
+		allline := [][]string{}
 		allkey := []string{}
 		allinput := make(map[string][][]string)
 		colors := []string{"#EA5532", "#FFF100", "#0068B7", "#00A0E9", "#00A051", "#9FD9F6", "#E4007F", "#D3DEF1", "#187FC4", "#86B81B", "#EA5504", "#00693E", "#F39800", "#ED6C00", "#009E96", "#008DCB", "D4ECEA", "#1D2088", "#920783"}
@@ -50,50 +64,59 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			allkey = append(allkey, ind)
 		}
 		elem := allinput[ind]
-		/*
-			for day in Mon..Fri
-				for e in A1..A10
-					for time in 9:00..18:45
-						make table[][]
-				str += table
-		*/
-		days := len(elem)
-
-		allstr := ""
-		fmt.Println(allkey)
-		for d := 0; d < days; d++ {
-			outputTable := [][]string{}
-			for _, ele := range allkey {
-				E := []string{ele}
-				for _, e := range allinput[ele][d][1:] {
-					if e == "1" {
-						E = append(E, ele)
+		for _, e := range allinput {
+			for i := 0; i < len(elem); i++ {
+				sum := 0
+				for j := len(elem[i]) - 1; j >= 0; j-- {
+					if e[i][j] == "1" {
+						e[i][j] = strconv.Itoa(sum + 1)
+						sum++
 					} else {
-						E = append(E, "")
+						sum = 0
 					}
 				}
-				outputTable = append(outputTable, E)
 			}
-			fmt.Println(outputTable)
-			// append table
-			allstr += `<h1>` + template.HTMLEscapeString(elem[d][0]) + `</h1>`
-			allstr += `<table id="table` + strconv.Itoa(d) + `" class="table is-bordered">`
-			allstr += `<thead><tr>`
-			for _, ele := range header {
+		}
+		for i := 0; i < len(elem); i++ {
+			row := []string{}
+			row = append(row, elem[i][0])
+			for j := 1; j < len(elem[i]); j++ {
+				init := ""
+				max := 0
+				for key, e := range allinput {
+					iv, _ := strconv.Atoi(e[i][j])
+					if max < iv {
+						max = iv
+						init = key
+					}
+				}
+				row = append(row, init)
+			}
+			allline = append(allline, row)
+		}
+		// fmt.Printf("%#v", allline[0])
+		scores := calc_score(allkey, allline)
+		// fmt.Println((len(elem)), (len(elem[0]) - 1))
+		allstr := ""
+		for key, ele := range scores {
+			allstr += `<h1>` + template.HTMLEscapeString(key) + `:` + template.HTMLEscapeString(strconv.Itoa(ele)) + `/` + template.HTMLEscapeString(strconv.Itoa(len(elem)*(len(elem[0])-1))) + `<h1>`
+		}
+		allstr += `<table id="table1" class="table is-bordered">`
+		allstr += `<thead><tr>`
+		for _, ele := range header {
+			allstr += `<td>` + template.HTMLEscapeString(ele) + `</td>`
+		}
+		allstr += `</tr></thead>`
+		allstr += `<tbody>`
+		for _, st := range allline {
+			allstr += `<tr>`
+			for _, ele := range st {
 				allstr += `<td>` + template.HTMLEscapeString(ele) + `</td>`
 			}
-			allstr += `</tr></thead>`
-			allstr += `<tbody>`
-			for _, st := range outputTable {
-				allstr += `<tr>`
-				for _, ele := range st {
-					allstr += `<td>` + template.HTMLEscapeString(ele) + `</td>`
-				}
-				allstr += `</tr>`
-			}
-			allstr += `</tbody>`
-			allstr += `</table>`
+			allstr += `</tr>`
 		}
+		allstr += `</tbody>`
+		allstr += `</table>`
 		allstr += `</body><script>document.querySelectorAll('td').forEach((v,i) => {`
 		for i, el := range allkey {
 			color := ""
@@ -114,13 +137,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		  <style>
 		  	html {
 				  overflow-x: scroll;
-				  padding: 20px;
 			  }
 		  </style>
 		</head>
 
 		<body>
-		  <h1>SHIFT Visualization</h1>`+allstr+`</html>`)
+		  <h1>SHIFT suggestion</h1>`+allstr+`</html>`)
 	} else {
 		fmt.Fprint(w, "not post request")
 	}
